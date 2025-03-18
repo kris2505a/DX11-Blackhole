@@ -2,6 +2,12 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 
+#include "Renderer.hpp"
+#include "VertexBuffer.hpp"
+#include "IndexBuffer.hpp"
+#include "Shader.hpp"
+
+
 int main(void)
 {
     GLFWwindow* window;
@@ -9,7 +15,7 @@ int main(void)
     if (!glfwInit())
         return -1;
 
-    window = glfwCreateWindow(1024, 768, "Hello World", nullptr, nullptr);
+    window = glfwCreateWindow(1280, 720, "Voxel Engine", nullptr, nullptr);
     if (!window)
     {
         glfwTerminate();
@@ -18,35 +24,47 @@ int main(void)
 
     glfwMakeContextCurrent(window);
 
+
     if (glewInit() != GLEW_OK) {
         std::cout << "Unable to init glew" << std::endl;
         return 0;
     }
 
+    RUN(glEnableVertexAttribArray(0));
+
     float positions[] = {
+         0.5f,  0.5f,
         -0.5f, -0.5f,
-         0.0f,  0.5f,
-         0.5f, -0.5f
+         0.5f, -0.5f,
+        -0.5f,  0.5f
+    };
+   
+    VertexBuffer vBuffer(positions, 4);
+    vBuffer.bind();
+    
+    unsigned int indexPos[] = {
+        1, 2, 3, 0, 2, 3
     };
     
-    unsigned int vBuffer;
-    unsigned int vArrayObj;
+    IndexBuffer iBuffer(indexPos, 6);
+    iBuffer.bind();
     
-    glGenBuffers(1, &vArrayObj);
 
-    glGenBuffers(1, &vBuffer);
-    glBindBuffer(GL_ARRAY_BUFFER, vBuffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(positions), &positions, GL_STATIC_DRAW);
-    
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 2, GL_FLOAT , GL_FALSE, 0, 0);
-    glBindVertexArray(vArrayObj);
+    RUN(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0));
+
+    Shader shader("Shaders/justashader.shd");
+    shader.bind();
+
+
+    glViewport(0, 0, 1280, 720);
+
+    glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
 
     while (!glfwWindowShouldClose(window))
     {
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        RUN(glDrawElements(GL_TRIANGLES, 8, GL_UNSIGNED_INT, nullptr));
 
         glfwSwapBuffers(window);
 

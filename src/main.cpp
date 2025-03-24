@@ -15,7 +15,7 @@ int main(void)
     if (!glfwInit())
         return -1;
 
-    window = glfwCreateWindow(1280, 720, "Voxel Engine", nullptr, nullptr);
+    window = glfwCreateWindow(800, 600, "Voxel Engine", nullptr, nullptr);
     if (!window)
     {
         glfwTerminate();
@@ -33,38 +33,40 @@ int main(void)
     RUN(glEnableVertexAttribArray(0));
 
     float positions[] = {
-         0.5f,  0.5f,
-        -0.5f, -0.5f,
-         0.5f, -0.5f,
-        -0.5f,  0.5f
+         -0.5f, -0.5f, //t1 1
+         -0.25f, 0.0f, //t1 2, t3 1
+          0.0f, -0.5f, //t1 3, t2 1
+          0.25f, 0.0f, //t2 2, t3 3
+          0.5f, -0.5f, //t2 3
+          0.0f,  0.5f //t3 2
     };
    
-    VertexBuffer vBuffer(positions, 4);
+    VertexBuffer vBuffer(positions, 8);
     vBuffer.bind();
     
     unsigned int indexPos[] = {
-        1, 2, 3, 0, 2, 3
+        0, 1, 2, 2, 3, 4, 1, 5, 3
     };
     
-    IndexBuffer iBuffer(indexPos, 6);
+    IndexBuffer iBuffer(indexPos, 9);
     iBuffer.bind();
     
 
     RUN(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0));
 
-    Shader shader("Shaders/justashader.shd");
+    Shader shader("Shaders/justashader.shd");   
     shader.bind();
 
 
-    glViewport(0, 0, 1280, 720);
+    //glViewport(0, 0, 1280, 720);
 
-    glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
+    glClearColor(0.0f, 0.3f, 0.5f, 1.0f);
 
     while (!glfwWindowShouldClose(window))
     {
         glClear(GL_COLOR_BUFFER_BIT);
 
-        RUN(glDrawElements(GL_TRIANGLES, 8, GL_UNSIGNED_INT, nullptr));
+        RUN(glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, nullptr));
 
         glfwSwapBuffers(window);
 

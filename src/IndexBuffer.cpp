@@ -1,24 +1,22 @@
-#include <GL/glew.h>
-
 #include "IndexBuffer.hpp"
-#include "Renderer.hpp"
+#include <glad/glad.h>
 
-#include <GLFW/glfw3.h>
+IndexBuffer::IndexBuffer(const void* data, unsigned int size) {
+    m_dataSize = size;
+    glGenBuffers(1, &m_bufferId);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_bufferId);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_dataSize * sizeof(unsigned int), data, GL_STATIC_DRAW);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+}
 
-IndexBuffer::IndexBuffer(const void* data, int indexCount) {
-    RUN(glGenBuffers(1, &m_renderId));
-    RUN(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_renderId));
-    RUN(glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexCount * sizeof(unsigned int), data, GL_STATIC_DRAW));
+const void IndexBuffer::bind() {
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_bufferId);
+}
+
+const void IndexBuffer::unBind() {
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
 IndexBuffer::~IndexBuffer() {
-
-}
-
-void IndexBuffer::bind() {
-    RUN(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_renderId));
-}
-
-void IndexBuffer::unBind() {
-    RUN(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
+    glDeleteBuffers(1, &m_bufferId);
 }

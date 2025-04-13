@@ -1,13 +1,15 @@
 #pragma once
 
-class IndexBuffer {
+class IndexBuffer{
 
 private:
-	unsigned int m_renderId;
+    unsigned int m_bufferId;
+    unsigned int m_dataSize;
 
 public:
-	IndexBuffer(const void* data, int indexCount);
-	~IndexBuffer();
-	void bind();
-	void unBind();
+    IndexBuffer(const void* data, unsigned int size);
+    ~IndexBuffer();
+    const void bind();
+    const void unBind();
+
 };

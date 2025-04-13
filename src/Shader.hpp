@@ -1,27 +1,21 @@
 #pragma once
 #include <string>
 
-struct Shaders {
-	std::string vertexShader, fragmentShader;
+struct ShaderSource {
+    std::string vertexShaderSrc, fragmentShaderSrc;
 };
 
 class Shader {
-	
+
 private:
-	unsigned int m_programId;
-	std::string m_path;
-	Shaders m_shader;
-
-	Shaders parseShader();
-	unsigned int compileShader(unsigned int shaderType, const std::string& shader);
-	unsigned int createShader();
-
+    unsigned int m_shaderId;
+    std::string m_shaderPath;
+    ShaderSource parseShader();
 
 public:
-	Shader(std::string path);
-	~Shader();
-	void bind();
-	void unBind();
+    Shader(const std::string& path = "Shader/Default.shader");
+    ~Shader();
+    const void bind();
+    const void unBind();
 
 };
-

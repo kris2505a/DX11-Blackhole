@@ -11,6 +11,7 @@ private:
     unsigned int m_shaderId;
     std::string m_shaderPath;
     ShaderSource parseShader();
+    unsigned int compileShader(unsigned int shaderType, const std::string& shaderSource);
 
 public:
     Shader(const std::string& path = "Shader/Default.shader");

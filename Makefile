@@ -9,7 +9,7 @@ GLFWDIR := thirdparty/GLFW
 GLADDIR := thirdparty/glad
 
 # Compiler and flags
-CXX := clang++
+CXX := g++
 CXXFLAGS := -std=c++17 -Wall -DGLAD_GLAPI_IMPORT -I$(GLFWDIR)/include -I$(GLADDIR)/include -I$(SRCDIR)
 
 # Linker flags

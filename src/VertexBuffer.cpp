@@ -10,11 +10,11 @@ VertexBuffer::VertexBuffer(const void* data, unsigned int size) {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-const void VertexBuffer::bind() {
+void VertexBuffer::bind() const {
     glBindBuffer(GL_ARRAY_BUFFER, m_bufferId);
 }
 
-const void VertexBuffer::unBind() {
+void VertexBuffer::unBind() const {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 

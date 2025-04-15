@@ -54,21 +54,39 @@ ShaderSource Shader::parseShader() {
 }
 
 unsigned int Shader::compileShader(unsigned int shaderType, const std::string& shaderSource) {
-    unsigned int shader = glCreateShader(shaderType);
+    unsigned int shaderId = glCreateShader(shaderType);
     const char* src = &shaderSource[0];
-    glShaderSource(shader, 1, &src, nullptr);
-    glCompileShader(shader);
-    return shader;
+    glShaderSource(shaderId, 1, &src, nullptr);
+    glCompileShader(shaderId);
+    
+    int result;
+    glGetShaderiv(shaderId, GL_COMPILE_STATUS, &result);
+    if(!result) {
+        int length;
+        glGetShaderiv(shaderId, GL_INFO_LOG_LENGTH, &length);
+        char* errorMessage = (char*) alloca (length * sizeof(char));
+        glGetShaderInfoLog(shaderId, length, &length, errorMessage);
+        std::cout << "Failed to compile shader:" << (shaderType == GL_VERTEX_SHADER ? "Vertex" : "Fragment");
+        std::cout << errorMessage << std::endl;
+        glDeleteShader(shaderId);
+        return 0;
+    }
+
+    return shaderId;
 }
 
 Shader::~Shader() {
     glDeleteProgram(m_shaderId);
 }
 
-const void Shader::bind() {
+void Shader::bind() const {
     glUseProgram(m_shaderId);
 }
 
-const void Shader::unBind() {
+void Shader::unBind() const {
     glUseProgram(0);
+}
+
+unsigned int Shader::getId() const {
+    return m_shaderId;
 }

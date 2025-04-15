@@ -6,6 +6,7 @@
 #include "IndexBuffer.hpp"
 #include "Shader.hpp"
 #include "VertexArray.hpp"
+#include "Renderer.hpp"
 
 const unsigned int c_width{ 800 };
 const unsigned int c_height{ 600 };
@@ -37,9 +38,9 @@ int main() {
 
     // glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
     float vertices[] = {
-        -0.5f, -0.5f, 0.0f,
-         0.0f,  0.5f, 0.0f,
-         0.5f, -0.5f, 0.0f
+        -0.5f, -0.5f, 0.0f, 0.1f, 0.5f, 0.7f,
+         0.0f,  0.5f, 0.0f, 0.9f, 0.2f, 0.6f,
+         0.5f, -0.5f, 0.0f, 0.3f, 0.8f, 0.4f
     };
 
 
@@ -54,8 +55,7 @@ int main() {
     
  
 
-    VertexBuffer vBuffer(vertices, 9);
-    vBuffer.bind();
+    VertexBuffer vBuffer(vertices, 18);
 
 
     Shader shader("Shader/Default.shader");
@@ -63,15 +63,27 @@ int main() {
 
     
 
-    vArray.linkBuffer(vBuffer, 0);
+    vArray.linkAttrib(vBuffer, 0, 3, GL_FLOAT, 6 * sizeof(float), (void*)0);
+    vArray.linkAttrib(vBuffer, 1, 3, GL_FLOAT, 6 * sizeof(float), (void*)(3 * sizeof(float)));
     vBuffer.bind();
 
+    vBuffer.unBind();
+    iBuffer.unBind();
+    vArray.unBind();
+    shader.unBind();
 
+    unsigned int uniformId = glGetUniformLocation(shader.getId(), "u_scale");
+    glUniform1f(uniformId, 0.5f);
     
     while (!glfwWindowShouldClose(window)) {
         
+        vArray.bind();
+        vBuffer.bind();
+        iBuffer.bind();
+        shader.bind();
+
         glClear(GL_COLOR_BUFFER_BIT);
-        glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
+        RUN(glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0));
         glfwSwapBuffers(window);
         glfwPollEvents();
 

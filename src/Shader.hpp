@@ -16,7 +16,8 @@ private:
 public:
     Shader(const std::string& path = "Shader/Default.shader");
     ~Shader();
-    const void bind();
-    const void unBind();
+    void bind() const;
+    void unBind() const;
+    unsigned int getId() const;
 
 };

@@ -7,12 +7,11 @@ BINDIR := bin
 # Library directories
 GLFWDIR := thirdparty/GLFW
 GLADDIR := thirdparty/glad
-STBDIR := thirdparty/stb/include
 
 # Compiler and flags
 CXX := g++
 CXXFLAGS := -std=c++17 -Wall -DGLAD_GLAPI_IMPORT \
-            -I$(GLFWDIR)/include -I$(GLADDIR)/include -I$(SRCDIR) -I$(STBDIR)
+            -I$(GLFWDIR)/include -I$(GLADDIR)/include -I$(SRCDIR)
 
 # Linker flags
 LDFLAGS := -mconsole -L$(GLFWDIR)/lib -L$(GLADDIR)/lib -lglfw3dll -lglad -lopengl32

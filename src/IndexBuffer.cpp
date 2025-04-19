@@ -10,14 +10,18 @@ IndexBuffer::IndexBuffer(const void* data, unsigned int size) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-const void IndexBuffer::bind() {
+void IndexBuffer::bind() const {
     RUN(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_bufferId));
 }
 
-const void IndexBuffer::unBind() {
+void IndexBuffer::unBind() const {
     RUN(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
 }
 
 IndexBuffer::~IndexBuffer() {
     RUN(glDeleteBuffers(1, &m_bufferId));
+}
+
+unsigned int IndexBuffer::getCount() const {
+    return m_dataSize;
 }

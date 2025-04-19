@@ -1,13 +1,15 @@
 #include <glad/glad.h>
 
 #include "Shader.hpp"
+#include "Renderer.hpp"
+
 #include <fstream>
 #include <sstream>
 #include <iostream>
 #include <string>
 
 enum ShaderType {
-    VERTEX, FRAGMENT
+    NONE = -1, VERTEX, FRAGMENT
 };
 
 Shader::Shader(const std::string& path) {
@@ -35,7 +37,7 @@ ShaderSource Shader::parseShader() {
     }
 
     std::stringstream ss[2];
-    ShaderType type;
+    ShaderType type = ShaderType::NONE;
 
     std::string line;
     while(getline(shaderFile, line)) {
@@ -89,4 +91,19 @@ void Shader::unBind() const {
 
 unsigned int Shader::getId() const {
     return m_shaderId;
+}
+
+unsigned int Shader::getUniform(const std::string& uniformName) {
+    int location = glGetUniformLocation(m_shaderId, uniformName.c_str());
+    if (location == -1)
+        std::cout << "Unable to find location" << std::endl;
+    return location;
+}
+
+void Shader::setUniform4f(const std::string& uniformName, float r, float g, float b, float a) {
+    RUN(glUniform4f(this->getUniform(uniformName), r, g, b, a));
+}
+
+void Shader::setUniform1f(const std::string& uniformName, float x) {
+    RUN(glUniform1f(this->getUniform(uniformName), x));
 }

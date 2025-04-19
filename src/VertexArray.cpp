@@ -26,7 +26,6 @@ void VertexArray::linkAttrib(const VertexBuffer& vBuffer, unsigned int layout, u
     vBuffer.bind();
     RUN(glVertexAttribPointer(layout, components, type, GL_FALSE, stride, offset));
     RUN(glEnableVertexAttribArray(layout));
-    vBuffer.unBind();
 }
 
 

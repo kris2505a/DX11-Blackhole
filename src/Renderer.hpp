@@ -2,7 +2,11 @@
 #include <glad/glad.h>
 #include <iostream>
 
-#define ASSERT(x) if(!(x)) std::abort();
+#include "VertexArray.hpp"
+#include "IndexBuffer.hpp"
+#include "Shader.hpp"
+
+#define ASSERT(x) if(!(x)) __debugbreak();
 #define RUN(x) glClearError(); \
                x; \
                ASSERT(glLogCall(#x, __FILE__, __LINE__))
@@ -20,3 +24,9 @@ static bool glLogCall(const char* function, const char* file, int line) {
     }
     return true;
 }
+
+class Renderer {
+
+public:
+    void draw(const VertexArray& vArray, const IndexBuffer& iBuffer, const Shader& shader);
+};

@@ -36,13 +36,13 @@ int main() {
 
     VertexArray vArray;
 
-    glClearColor(0.0f, 1.0f, 1.0f, 1.0f);  // Set clear color to cyan or any other contrasting color
+    //glClearColor(0.0f, 1.0f, 1.0f, 1.0f);  // Set clear color to cyan or any other contrasting color
     float vertices[] = {
         // x      y     z      r     g    b    
-        -0.5f,  0.5f, 0.0f, 1.0f, 0.0f, 0.0f,
-         0.5f,  0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
-         0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f,
-        -0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 0.0f
+        -0.5f,  0.5f, 0.0f,
+         0.5f,  0.5f, 0.0f,
+         0.5f, -0.5f, 0.0f,
+        -0.5f, -0.5f, 0.0f
     };
 
     
@@ -56,35 +56,33 @@ int main() {
     
  
 
-    VertexBuffer vBuffer(vertices, 24);
+    VertexBuffer vBuffer(vertices, 12);
 
     Shader shader("Shader/Default.shader");
     shader.bind();
 
     
-    vArray.linkAttrib(vBuffer, 0, 3, GL_FLOAT, 6 * sizeof(float), (void*)0);
-    vArray.linkAttrib(vBuffer, 1, 3, GL_FLOAT, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+    vArray.linkAttrib(vBuffer, 0, 3, GL_FLOAT, 3 * sizeof(float), (void*)0);
+    //vArray.linkAttrib(vBuffer, 1, 3, GL_FLOAT, 6 * sizeof(float), (void*)(3 * sizeof(float)));
     vBuffer.bind();
 
 
+    shader.setUniform1f("u_scale", 0.2f);
+    shader.setUniform4f("u_color", 0.0f, 0.5f, 0.8f, 1.0f);
 
-    unsigned int uniformId = glGetUniformLocation(shader.getId(), "u_scale");
-    glUniform1f(uniformId, 0.2f);
 
     vBuffer.unBind();
     iBuffer.unBind();
     vArray.unBind();
     shader.unBind();
+
+    Renderer renderer;
     
     while (!glfwWindowShouldClose(window)) {
 
-        vArray.bind();
-        vBuffer.bind();
-        iBuffer.bind();
-        shader.bind();
 
         glClear(GL_COLOR_BUFFER_BIT);
-        RUN(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0));
+        renderer.draw(vArray, iBuffer, shader);
         glfwSwapBuffers(window);
         glfwPollEvents();
 

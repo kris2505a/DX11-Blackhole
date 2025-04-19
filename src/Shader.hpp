@@ -23,4 +23,5 @@ public:
     unsigned int getId() const;
     void setUniform4f(const std::string& uniformName, float r, float g, float b, float a);
     void setUniform1f(const std::string& uniformName, float x);
+    void setUniform1i(const std::string& uniformName, int x);
 };

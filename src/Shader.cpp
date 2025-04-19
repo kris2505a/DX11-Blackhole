@@ -107,3 +107,7 @@ void Shader::setUniform4f(const std::string& uniformName, float r, float g, floa
 void Shader::setUniform1f(const std::string& uniformName, float x) {
     RUN(glUniform1f(this->getUniform(uniformName), x));
 }
+
+void Shader::setUniform1i(const std::string& uniformName, int x) {
+    RUN(glUniform1i(this->getUniform(uniformName), x));
+}

@@ -42,7 +42,7 @@ target_link_libraries(OpenGL_Restart
         opengl32
 )
 
-# Copy DLLs post-build
+# Copy DLL files post-build
 add_custom_command(TARGET OpenGL_Restart POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_if_different
         "${GLFW_DLL_PATH}"

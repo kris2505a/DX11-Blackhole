@@ -6,9 +6,9 @@
 #include <VertexBuffer.hpp>
 #include <IndexBuffer.hpp>
 #include <Shader.hpp>
+#include <VertexArray.hpp>
 
-int main()
-{
+int main() {
 
     if (!glfwInit())
         return -1;
@@ -31,37 +31,33 @@ int main()
     glViewport(0, 0, 1280, 720);
     glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
 
-    const float vertices[] = {
+    constexpr float vertices[] = {
         -0.5f, -0.5f, 0.0f,
          0.0f,  0.5f, 0.0f,
          0.5f, -0.5f, 0.0f
     };
 
-    const unsigned int indices[] = {
+    constexpr unsigned int indices[] = {
         0, 1, 2
     };
 
     VertexBuffer vBuffer(vertices, sizeof(vertices));
     IndexBuffer iBuffer(indices, sizeof(indices));
     Shader shader("shaders/BasicShader.shad");
+    VertexBufferLayout vBufferLayout;
+    vBufferLayout.push(3, GL_FLOAT, GL_FALSE);
 
-    unsigned int vao;
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
-    vBuffer.bind();
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (const void*)0);
+    VertexArray vArray;
+
+    vArray.bind();
+    vArray.addBuffer(vBuffer, vBufferLayout);
     vBuffer.unbind();
-
-    glBindVertexArray(0);
-
-
 
     while (!glfwWindowShouldClose(window)) {
         glClear(GL_COLOR_BUFFER_BIT);
 
         shader.bind();
-        glBindVertexArray(vao);
+        vArray.bind();
         vBuffer.bind();
         iBuffer.bind();
 

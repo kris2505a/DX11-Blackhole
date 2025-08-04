@@ -1,11 +1,16 @@
 #include "Window.h"
 
-Window::Window(HINSTANCE& _instance)
-	: m_instance(_instance), m_procs(Procs()) {
 
+Window::Window() {
+	m_instance = GetModuleHandle(nullptr);
 	initWinClass();
 	initHandle();
 	ShowWindow(m_winHandle, SW_SHOW);
+}
+
+Window::~Window() {
+	UnregisterClass(L"BlackholeWindow", m_instance);
+	DestroyWindow(m_winHandle);
 }
 
 LRESULT Window::winProcHandler(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lparam) {

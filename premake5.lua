@@ -14,6 +14,9 @@ project "BlackHole"
     kind "consoleApp"
     language "C++"
     staticruntime "Off"
+    
+    entrypoint "mainCRTStartup"
+    linkoptions { "/SUBSYSTEM:WINDOWS" }
 
 
     targetdir("Binaries/" .. outputDir .. "/%{prj.name}")
@@ -48,9 +51,6 @@ project "BlackHole"
     defines {
 	
     }
-
-    filter "system:windows"
-        linkoptions { "/SUBSYSTEM:WINDOWS" }
 
     filter "configurations:Debug" 
         defines {"DEBUG"}

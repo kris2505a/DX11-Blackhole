@@ -11,8 +11,8 @@ struct Procs {
 
 class Window {
 public:
-	Window(HINSTANCE& _instance);
-
+	Window();
+	~Window();
 	static LRESULT CALLBACK winProcHandler(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lparam);
 
 private:
@@ -20,7 +20,7 @@ private:
 	
 	HWND m_winHandle;
 	WNDCLASSEX m_wClass;
-	HINSTANCE& m_instance;
+	HINSTANCE m_instance;
 
 private:
 	void initWinClass();

@@ -6,6 +6,7 @@ Window::Window() {
 	initWinClass();
 	initHandle();
 	ShowWindow(m_winHandle, SW_SHOW);
+	m_open = true;
 }
 
 Window::~Window() {
@@ -15,10 +16,23 @@ Window::~Window() {
 
 LRESULT Window::winProcHandler(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lparam) {
 
+	Window* window = nullptr;
+
+	if (_msg == WM_NCCREATE) {
+		CREATESTRUCT* create = reinterpret_cast<CREATESTRUCT*>(_lparam);
+		window = static_cast<Window*>(create->lpCreateParams);
+		SetWindowLongPtr(_hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(window));
+	}
+	else {
+		window = reinterpret_cast<Window*>(GetWindowLongPtr(_hwnd, GWLP_USERDATA));
+	}
+
 	switch (_msg) {
 	case WM_DESTROY:
+	{
 		PostQuitMessage(0);
-		return 0;
+		window->m_open = false;
+	}break;
 	}
 	
 	return DefWindowProc(_hwnd, _msg, _wparam, _lparam);
@@ -55,11 +69,23 @@ void Window::initHandle() {
 		nullptr,
 		nullptr,
 		m_instance,
-		nullptr
+		this
 	);
 	if (!m_winHandle) {
 		DWORD err = GetLastError();
 		MessageBoxA(nullptr, ("CreateWindowEx failed. Error code: " + std::to_string(err)).c_str(), "Error", MB_OK | MB_ICONERROR);
 	}
 
+}
+
+bool Window::isOpen() const {
+	return m_open;
+}
+
+void Window::peekMessage() {
+	MSG msg = {};
+	while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
+	}
 }

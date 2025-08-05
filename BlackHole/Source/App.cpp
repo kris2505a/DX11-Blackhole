@@ -9,9 +9,7 @@ App::~App() {
 }
 
 void App::run() {
-    MSG msg = {};
-    while (GetMessage(&msg, nullptr, 0, 0)) {
-        TranslateMessage(&msg);
-        DispatchMessage(&msg);
+    while (m_window->isOpen()) {
+        m_window->peekMessage();
     }
 }

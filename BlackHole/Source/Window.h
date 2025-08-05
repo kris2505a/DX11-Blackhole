@@ -14,6 +14,8 @@ public:
 	Window();
 	~Window();
 	static LRESULT CALLBACK winProcHandler(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lparam);
+	bool isOpen() const;
+	void peekMessage();
 
 private:
 	Procs m_procs;
@@ -21,6 +23,8 @@ private:
 	HWND m_winHandle;
 	WNDCLASSEX m_wClass;
 	HINSTANCE m_instance;
+
+	bool m_open;
 
 private:
 	void initWinClass();

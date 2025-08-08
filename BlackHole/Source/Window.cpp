@@ -32,6 +32,31 @@ LRESULT Window::winProcHandler(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lp
 	{
 		PostQuitMessage(0);
 		window->m_open = false;
+
+	}break;
+	
+	case WM_KEYDOWN:
+	{
+		KeyDownEvent e(_wparam);
+		window->m_callback(e);
+	}break;
+
+	case WM_KEYUP :
+	{
+		KeyUpEvent e(_wparam);
+		window->m_callback(e);
+	}break;
+
+	case WM_LBUTTONDOWN:
+	{
+		MouseButtonPressed e(_wparam);
+		window->m_callback(e);
+	}break;
+
+	case WM_LBUTTONUP:
+	{
+		MouseButtonReleased e(_wparam);
+		window->m_callback(e);
 	}break;
 	}
 	
@@ -88,4 +113,8 @@ void Window::peekMessage() {
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
 	}
+}
+
+void Window::setCallbackFn(const EventCallbackFn& fn) {
+	m_callback = fn;
 }

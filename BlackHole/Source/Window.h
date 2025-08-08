@@ -1,6 +1,8 @@
 #pragma once
 #include <string>
 #include <Windows.h>
+#include <functional>
+#include "Event.h"
 
 struct Procs {
 	unsigned int width;
@@ -10,12 +12,14 @@ struct Procs {
 };
 
 class Window {
+	using EventCallbackFn = std::function<void(Event&)>;
 public:
 	Window();
 	~Window();
 	static LRESULT CALLBACK winProcHandler(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lparam);
 	bool isOpen() const;
 	void peekMessage();
+	void setCallbackFn(const EventCallbackFn& fn);
 
 private:
 	Procs m_procs;
@@ -24,6 +28,7 @@ private:
 	WNDCLASSEX m_wClass;
 	HINSTANCE m_instance;
 
+	EventCallbackFn m_callback;
 	bool m_open;
 
 private:

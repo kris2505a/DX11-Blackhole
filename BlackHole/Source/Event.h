@@ -27,7 +27,7 @@ protected:
 
 class KeyboardEvent : public Event {
 public:
-	virtual std::string toString() const override {}
+	virtual std::string toString() const override { return "KeyEvent"; }
 	WPARAM getKeyCode() const { return m_keyCode; }
 protected:
 	KeyboardEvent(WPARAM _key) : m_keyCode (_key) {}
@@ -58,7 +58,7 @@ public:
 
 class MouseButtonEvent : public Event {
 public:
-	virtual std::string toString() const {}
+	virtual std::string toString() const { return "MouseEvent"; }
 	WPARAM getButtonCode() const { return m_button; }
 protected:
 	MouseButtonEvent(WPARAM _button) : m_button(_button){}

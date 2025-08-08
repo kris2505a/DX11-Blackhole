@@ -7,6 +7,7 @@ public:
 	~App();
 
 	void run();
+	void onEvent(Event& e);
 
 private:
 	Window* m_window;

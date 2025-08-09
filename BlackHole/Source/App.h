@@ -11,4 +11,8 @@ public:
 
 private:
 	Window* m_window;
+
+private:
+	void update(float deltaTime);
+	void render();
 };

@@ -20,5 +20,15 @@ void App::onEvent(Event& e) {
 void App::run() {
     while (m_window->isOpen()) {
         m_window->peekMessage();
+        update(1.0f);
+        render();
     }
+}
+
+void App::update(float deltaTime) {
+
+}
+
+void App::render() {
+    
 }
